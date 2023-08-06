@@ -1,8 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 export default function NavBar() {
+  const pathname = usePathname();
+
   return (
     <Navbar
       bg="primary"
@@ -12,11 +16,16 @@ export default function NavBar() {
       collapseOnSelect
     >
       <Container>
-        <Navbar.Brand href="/">NextJS Image Gallery</Navbar.Brand>
+        <Navbar.Brand as={Link} href="/">
+          NextJS Image Gallery
+        </Navbar.Brand>
+
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
           <Nav>
-            <Nav.Link href="/hello">Hello</Nav.Link>
+            <Nav.Link as={Link} href="/hello" active={pathname === "/hello"}>
+              Hello
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
