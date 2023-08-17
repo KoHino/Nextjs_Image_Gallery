@@ -1,10 +1,24 @@
 import { UnsplashImage } from "@/models/unsplash-image";
 import Image from "next/image";
 import styles from "./TopicPage.module.css";
+import { Alert } from "@/components/bootstrap";
+import { Metadata } from "next";
 
 interface PageProps {
   params: { topic: string };
   //searchPrams: { [key: string]: string | string[] | undefined },
+}
+
+// export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return ["health", "fitness", "coding"].map((topic) => ({ topic }));
+}
+
+export function generateMetadata({ params: { topic } }: PageProps): Metadata {
+  return {
+    title: topic + " - NextJS 13.4 Image Gallery",
+  };
 }
 
 export default async function Page({ params: { topic } }: PageProps) {
@@ -14,6 +28,13 @@ export default async function Page({ params: { topic } }: PageProps) {
   const images: UnsplashImage[] = await response.json();
   return (
     <div>
+      <Alert>
+        This page uses <strong>generateStaticParams</strong> to render and cache
+        static pages at build time, even though the URL has a dynamic Parameter.
+        Pages that are not included in generateStaticParams will be fetched &
+        rendered on first access and then{" "}
+        <strong>cached for subsequent requests</strong>(this can be diasbled)
+      </Alert>
       <h1>{topic}</h1>
       {images.map((image) => (
         <Image
